@@ -1,0 +1,23 @@
+{
+  "name": "react-learning",
+  "version": "1.0.0",
+  "description": "This is React leaning and practice",
+  "keywords": [],
+  "homepage": "https://github.com/aashu1018/react-learning#readme",
+  "bugs": {
+    "url": "https://github.com/aashu1018/react-learning/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aashu1018/react-learning.git"
+  },
+  "license": "ISC",
+  "author": "Ashutosh Singh",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  }
+}
