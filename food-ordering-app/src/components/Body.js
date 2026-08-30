@@ -1,4 +1,5 @@
 import RestaurantCard from "./RestaurantCard";
+import restaurants from "../assets/MockData";
 
 const Body = ({ restaurants }) => {
     return (
