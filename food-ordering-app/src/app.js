@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import logo from 'url:./Logo.png';
+import logo from 'url:./assets/Logo.png';
+import Header from './components/Header';
+import Body from './components/Body';
 
 const restaurants = [
     {
@@ -103,73 +105,33 @@ const restaurants = [
         deliveryTime: 27,
         image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80',
     },
+    {
+        id: 11,
+        name: 'Haldiram\'s',
+        cuisines: ['North Indian', 'Sweets', 'Chaat'],
+        dishes: ['Chole Bhature', 'Aloo Tikki', 'Rasgulla'],
+        costForTwo: 300,
+        rating: 4.3,
+        deliveryTime: 25,
+        image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+        id: 12,
+        name: 'Pizza Hut',
+        cuisines: ['Pizzas', 'Italian', 'Fast Food'],
+        dishes: ['Pan Pizza', 'Stuffed Garlic Bread', 'Pasta'],
+        costForTwo: 450,
+        rating: 4.1,
+        deliveryTime: 29,
+        image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80',
+    },
 ];
-
-const Header = () => {
-    return (
-        <div className="header">
-            <div className="logo-container">
-                <img className="logo" src={logo} alt="logo" />
-            </div>
-            <div className="nav-items">
-                <ul>
-                    <li>Home</li>
-                    <li>About Us</li>
-                    <li>Contact Us</li>
-                    <li>Cart</li>
-                </ul>
-            </div>
-        </div>
-    );
-};
-
-const RestaurantCard = ({ restaurant }) => {
-    const { name, cuisines, dishes, costForTwo, rating, deliveryTime, image } = restaurant;
-
-    return (
-        <div className="res-card">
-            <div className="res-img-wrap">
-                <img className="res-logo" src={image} alt={name} />
-                <span className="res-rating">{rating} ★</span>
-            </div>
-            <div className="res-card-body">
-                <h3 className="res-name">{name}</h3>
-                <p className="res-cuisines">{cuisines.join(', ')}</p>
-                <ul className="res-dishes">
-                    {dishes.map((dish) => (
-                        <li key={dish}>{dish}</li>
-                    ))}
-                </ul>
-                <div className="res-meta">
-                    <span>₹{costForTwo} for two</span>
-                    <span>{deliveryTime} mins</span>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const Body = () => {
-    return (
-        <div className="body">
-            <div className="search">
-                <input className="search-input" type="text" placeholder="Search restaurants or dishes" />
-                <button className="search-btn" type="button">Search</button>
-            </div>
-            <div className="res-container">
-                {restaurants.map((restaurant) => (
-                    <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-                ))}
-            </div>
-        </div>
-    );
-};
 
 const AppLayout = () => {
     return (
         <div className="app">
             <Header />
-            <Body />
+            <Body restaurants={restaurants} />
         </div>
     );
 };
