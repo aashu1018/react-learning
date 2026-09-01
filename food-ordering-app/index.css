@@ -38,6 +38,20 @@ body {
     cursor: pointer;
 }
 
+.login-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #fc8019;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background: #e67312;
+}
+
 .body {
     max-width: 1200px;
     margin: 0 auto;
