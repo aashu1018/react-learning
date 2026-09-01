@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import RestaurantCard from './RestaurantCard';
+import Shimmer from './Shimmer';
 import mockRestaurants from '../assets/MockData';
 
 const LIST_URL = 'https://namastedev.com/api/v1/listRestaurants';
@@ -67,7 +68,10 @@ const Body = () => {
         setLoading(true);
         setStatus('');
 
-        const mapped = await loadRestaurantList(LIST_URL);
+        const [mapped] = await Promise.all([
+            loadRestaurantList(LIST_URL),
+            new Promise((resolve) => setTimeout(resolve, 500)),
+        ]);
 
         if (mapped.length) {
             setAllRestaurants(mapped);
@@ -144,7 +148,7 @@ const Body = () => {
             </div>
             {status ? <p className="api-status">{status}</p> : null}
             {loading ? (
-                <h2>Loading restaurants...</h2>
+                <Shimmer />
             ) : (
                 <div className="res-container">
                     {listOfRestaurants.map((restaurant) => (
