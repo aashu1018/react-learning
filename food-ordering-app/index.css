@@ -44,10 +44,43 @@ body {
     padding: 24px;
 }
 
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
 .search {
     display: flex;
     gap: 8px;
-    margin-bottom: 24px;
+    flex: 1;
+}
+
+.filter-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.filter-btns button {
+    padding: 10px 14px;
+    border: 1px solid #fc8019;
+    border-radius: 8px;
+    background: #fff;
+    color: #fc8019;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.filter-btns button:hover {
+    background: #fff4ea;
+}
+
+.api-status {
+    margin: 0 0 16px;
+    color: #535665;
+    font-size: 14px;
 }
 
 .search-input {

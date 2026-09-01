@@ -10,13 +10,17 @@ const RestaurantCard = ({ restaurant }) => {
             <div className="res-card-body">
                 <h3 className="res-name">{name}</h3>
                 <p className="res-cuisines">{cuisines.join(', ')}</p>
-                <ul className="res-dishes">
-                    {dishes.map((dish) => (
-                        <li key={dish}>{dish}</li>
-                    ))}
-                </ul>
+                {dishes?.length ? (
+                    <ul className="res-dishes">
+                        {dishes.map((dish) => (
+                            <li key={dish}>{dish}</li>
+                        ))}
+                    </ul>
+                ) : null}
                 <div className="res-meta">
-                    <span>₹{costForTwo} for two</span>
+                    <span>
+                        {typeof costForTwo === 'number' ? `₹${costForTwo} for two` : costForTwo}
+                    </span>
                     <span>{deliveryTime} mins</span>
                 </div>
             </div>
