@@ -1,9 +1,10 @@
-const MENU_URL = (id) => `https://namastedev.com/api/v1/listRestaurantMenu/${id}`;
-const SWIGGY_MENU_URL = (id) =>
-    `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.9351929&lng=77.62448069999999&restaurantId=${id}`;
+const SWIGGY_MENU_QUERIES = (id) => [
+    `/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.9351929&lng=77.62448069999999&restaurantId=${id}`,
+    `/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.9351929&lng=77.62448069999999&restaurantId=${id}`,
+];
 
 export const MENU_IMAGE_URL =
-    'https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_200,h_200,c_fit/';
+    'https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_208,h_208,c_fit/';
 
 const isJsonResponse = (response) => {
     const contentType = response.headers.get('content-type') || '';
@@ -30,8 +31,36 @@ const mapMenuItem = (item) => {
         description: info.description || '',
         price: pricePaise / 100,
         isVeg: info.isVeg === 1 || info.itemAttribute?.vegClassifier === 'VEG',
+        isBestseller: Boolean(info.isBestseller || info.ribbon?.text?.toLowerCase().includes('best')),
+        rating: info.ratings?.aggregatedRating?.rating,
         imageId: info.imageId,
     };
+};
+
+const sectionFromCard = (section) => {
+    if (!section) {
+        return null;
+    }
+
+    if (Array.isArray(section.itemCards) && section.itemCards.length) {
+        return {
+            title: section.title || 'Menu',
+            items: section.itemCards.map(mapMenuItem).filter((item) => item.name),
+        };
+    }
+
+    // Nested categories (e.g. "Recommended" / combo groups)
+    if (Array.isArray(section.categories) && section.categories.length) {
+        const items = section.categories.flatMap((category) =>
+            (category.itemCards || []).map(mapMenuItem)
+        );
+        return {
+            title: section.title || 'Menu',
+            items: items.filter((item) => item.name),
+        };
+    }
+
+    return null;
 };
 
 const pickMenuSections = (json) => {
@@ -43,13 +72,8 @@ const pickMenuSections = (json) => {
         }
 
         return regularCards
-            .map((entry) => entry?.card?.card)
-            .filter((section) => Array.isArray(section?.itemCards) && section.itemCards.length)
-            .map((section) => ({
-                title: section.title || 'Menu',
-                items: section.itemCards.map(mapMenuItem).filter((item) => item.name),
-            }))
-            .filter((section) => section.items.length);
+            .map((entry) => sectionFromCard(entry?.card?.card))
+            .filter((section) => section?.items?.length);
     }
     return [];
 };
@@ -75,9 +99,27 @@ const loadJson = async (url) => {
     }
 };
 
+const menuCandidateUrls = (restaurantId) => {
+    const swiggyPaths = SWIGGY_MENU_QUERIES(restaurantId);
+    return [
+        ...swiggyPaths.map((path) => `/swiggy${path}`),
+        ...swiggyPaths.map((path) => `https://www.swiggy.com${path}`),
+    ];
+};
+
 export const loadRestaurantMenu = async (restaurantId) => {
-    const json =
-        (await loadJson(MENU_URL(restaurantId))) ||
-        (await loadJson(SWIGGY_MENU_URL(restaurantId)));
-    return json ? parseMenuPayload(json) : null;
+    for (const url of menuCandidateUrls(restaurantId)) {
+        const json = await loadJson(url);
+        if (!json) {
+            continue;
+        }
+        const payload = parseMenuPayload(json);
+        if (payload) {
+            return {
+                ...payload,
+                source: url.startsWith('/swiggy') ? 'swiggy-proxy' : 'swiggy',
+            };
+        }
+    }
+    return null;
 };

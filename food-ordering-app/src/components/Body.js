@@ -27,11 +27,11 @@ const Body = () => {
         if (mapped.length) {
             setAllRestaurants(mapped);
             setListOfRestaurants(mapped);
-            setStatus(`Loaded ${mapped.length} restaurants from API`);
+            setStatus(`Loaded ${mapped.length} restaurants from Swiggy`);
         } else {
             setAllRestaurants(mockRestaurants);
             setListOfRestaurants(mockRestaurants);
-            setStatus('API did not return JSON (CORS or Cloudflare). Showing mock data.');
+            setStatus('Swiggy API did not return restaurants. Showing mock data.');
         }
 
         setLoading(false);

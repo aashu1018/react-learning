@@ -283,6 +283,50 @@ body {
     color: #535665;
 }
 
+.menu-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0 8px;
+}
+
+.veg-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid #267e3e;
+    border-radius: 999px;
+    background: #fff;
+    color: #267e3e;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.veg-toggle input {
+    accent-color: #267e3e;
+    width: 16px;
+    height: 16px;
+}
+
+.bestseller-tag {
+    margin-left: 8px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #fff4ea;
+    color: #fc8019;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.menu-item-rating {
+    margin: 0 0 6px;
+    color: #267e3e;
+    font-size: 13px;
+    font-weight: 700;
+}
+
 .menu-section {
     margin-top: 28px;
 }

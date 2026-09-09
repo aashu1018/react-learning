@@ -12,7 +12,14 @@ const RestaurantCard = ({ restaurant }) => {
         >
             <div className="res-card">
                 <div className="res-img-wrap">
-                    <img className="res-logo" src={image} alt={name} />
+                    <img
+                        className="res-logo"
+                        src={
+                            image ||
+                            'https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/placeholder'
+                        }
+                        alt={name}
+                    />
                     <span className="res-rating">{rating} ★</span>
                 </div>
                 <div className="res-card-body">
@@ -20,8 +27,8 @@ const RestaurantCard = ({ restaurant }) => {
                     <p className="res-cuisines">{cuisines.join(', ')}</p>
                     {dishes?.length ? (
                         <ul className="res-dishes">
-                            {dishes.map((dish) => (
-                                <li key={dish}>{dish}</li>
+                            {dishes.map((dish, index) => (
+                                <li key={`${dish}-${index}`}>{dish}</li>
                             ))}
                         </ul>
                     ) : null}
