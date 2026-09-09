@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import Shimmer from './Shimmer';
 import mockMenusById from '../assets/MockMenus';
 import { loadRestaurantMenu, MENU_IMAGE_URL } from '../utils/menuApi';
+import { resolveRestaurantBySlug } from '../utils/listApi';
 
 const formatCost = (info) => {
     if (info?.costForTwoMessage) {
@@ -15,7 +16,7 @@ const formatCost = (info) => {
 };
 
 const RestaurantMenu = () => {
-    const { resId } = useParams();
+    const { resName } = useParams();
     const preview = useLocation().state?.restaurant;
     const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -27,7 +28,10 @@ const RestaurantMenu = () => {
         const fetchMenu = async () => {
             setLoading(true);
             setStatus('');
-            const payload = await loadRestaurantMenu(resId);
+
+            const restaurant = await resolveRestaurantBySlug(resName, preview);
+            const restaurantId = restaurant?.id;
+            const payload = restaurantId ? await loadRestaurantMenu(restaurantId) : null;
 
             if (cancelled) {
                 return;
@@ -36,27 +40,32 @@ const RestaurantMenu = () => {
             if (payload?.sections?.length) {
                 setMenu(payload);
                 setStatus('Loaded menu from API');
-            } else if (mockMenusById[String(resId)]) {
-                setMenu(mockMenusById[String(resId)]);
+            } else if (restaurantId && mockMenusById[String(restaurantId)]) {
+                setMenu(mockMenusById[String(restaurantId)]);
                 setStatus('API did not return JSON (CORS or Cloudflare). Showing mock menu.');
             } else {
+                const fallbackName = restaurant?.name || resName.replace(/-/g, ' ');
                 setMenu({
-                    info: preview
+                    info: restaurant
                         ? {
-                              id: preview.id,
-                              name: preview.name,
-                              cuisines: preview.cuisines,
-                              avgRating: preview.rating,
+                              id: restaurant.id,
+                              name: restaurant.name,
+                              cuisines: restaurant.cuisines,
+                              avgRating: restaurant.rating,
                               costForTwoMessage:
-                                  typeof preview.costForTwo === 'number'
-                                      ? `₹${preview.costForTwo} for two`
-                                      : preview.costForTwo,
-                              sla: { deliveryTime: preview.deliveryTime },
+                                  typeof restaurant.costForTwo === 'number'
+                                      ? `₹${restaurant.costForTwo} for two`
+                                      : restaurant.costForTwo,
+                              sla: { deliveryTime: restaurant.deliveryTime },
                           }
-                        : { id: resId, name: `Restaurant ${resId}` },
+                        : { name: fallbackName },
                     sections: [],
                 });
-                setStatus('Could not load a menu for this restaurant yet.');
+                setStatus(
+                    restaurant
+                        ? 'Could not load a menu for this restaurant yet.'
+                        : `No restaurant found for "${resName}".`
+                );
             }
 
             setLoading(false);
@@ -66,7 +75,7 @@ const RestaurantMenu = () => {
         return () => {
             cancelled = true;
         };
-    }, [resId, preview]);
+    }, [resName, preview]);
 
     if (loading) {
         return (

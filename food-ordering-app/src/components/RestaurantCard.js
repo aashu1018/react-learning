@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
+import { restaurantSlug } from '../utils/restaurantSlug';
 
 const RestaurantCard = ({ restaurant }) => {
-    const { id, name, cuisines, dishes, costForTwo, rating, deliveryTime, image } = restaurant;
+    const { name, cuisines, dishes, costForTwo, rating, deliveryTime, image } = restaurant;
 
     return (
-        <Link className="res-card-link" to={`/restaurants/${id}`} state={{ restaurant }}>
+        <Link
+            className="res-card-link"
+            to={`/restaurants/${restaurantSlug(name)}`}
+            state={{ restaurant }}
+        >
             <div className="res-card">
                 <div className="res-img-wrap">
                     <img className="res-logo" src={image} alt={name} />
