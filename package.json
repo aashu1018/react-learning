@@ -22,8 +22,12 @@
   "devDependencies": {
     "parcel": "^2.16.4"
   },
+  "@parcel/resolver-default": {
+    "packageExports": true
+  },
   "dependencies": {
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.3"
   }
 }

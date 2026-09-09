@@ -1,5 +1,6 @@
-import { useState } from "react";
-import logo from "url:../assets/Logo.png";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import logo from 'url:../assets/Logo.png';
 
 const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -7,21 +8,31 @@ const Header = () => {
     return (
         <div className="header">
             <div className="logo-container">
-                <img className="logo" src={logo} alt="logo" />
+                <Link to="/">
+                    <img className="logo" src={logo} alt="logo" />
+                </Link>
             </div>
             <div className="nav-items">
                 <ul>
-                    <li>Home</li>
-                    <li>About Us</li>
-                    <li>Contact Us</li>
-                    <li>Cart</li>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/about">About Us</Link>
+                    </li>
+                    <li>
+                        <Link to="/contact">Contact Us</Link>
+                    </li>
+                    <li>
+                        <Link to="/cart">Cart</Link>
+                    </li>
                     <li>
                         <button
                             className="login-btn"
                             type="button"
                             onClick={() => setIsLoggedIn((prev) => !prev)}
                         >
-                            {isLoggedIn ? "Logout" : "Login"}
+                            {isLoggedIn ? 'Logout' : 'Login'}
                         </button>
                     </li>
                 </ul>
