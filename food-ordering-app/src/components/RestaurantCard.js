@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { PLACEHOLDER_IMAGE } from '../constants/swiggy';
 import { restaurantSlug } from '../utils/restaurantSlug';
+import { formatCostForTwo } from '../utils/formatters';
 
 const RestaurantCard = ({ restaurant }) => {
     const { name, cuisines, dishes, costForTwo, rating, deliveryTime, image } = restaurant;
@@ -12,14 +14,7 @@ const RestaurantCard = ({ restaurant }) => {
         >
             <div className="res-card">
                 <div className="res-img-wrap">
-                    <img
-                        className="res-logo"
-                        src={
-                            image ||
-                            'https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/placeholder'
-                        }
-                        alt={name}
-                    />
+                    <img className="res-logo" src={image || PLACEHOLDER_IMAGE} alt={name} />
                     <span className="res-rating">{rating} ★</span>
                 </div>
                 <div className="res-card-body">
@@ -33,11 +28,7 @@ const RestaurantCard = ({ restaurant }) => {
                         </ul>
                     ) : null}
                     <div className="res-meta">
-                        <span>
-                            {typeof costForTwo === 'number'
-                                ? `₹${costForTwo} for two`
-                                : costForTwo}
-                        </span>
+                        <span>{formatCostForTwo(costForTwo)}</span>
                         <span>{deliveryTime} mins</span>
                     </div>
                 </div>
