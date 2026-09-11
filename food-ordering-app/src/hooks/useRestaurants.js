@@ -6,6 +6,7 @@ import {
     filterFastDelivery,
     filterTopRated,
 } from '../utils/restaurantFilters';
+import { setCachedRestaurantList } from '../utils/cache';
 
 const useRestaurants = () => {
     const [allRestaurants, setAllRestaurants] = useState([]);
@@ -21,10 +22,7 @@ const useRestaurants = () => {
             setLoading(true);
             setStatus('');
 
-            const [mapped] = await Promise.all([
-                loadRestaurantList(),
-                new Promise((resolve) => setTimeout(resolve, 500)),
-            ]);
+            const mapped = await loadRestaurantList();
 
             if (cancelled) {
                 return;
@@ -35,6 +33,7 @@ const useRestaurants = () => {
                 setListOfRestaurants(mapped);
                 setStatus(`Loaded ${mapped.length} restaurants from Swiggy`);
             } else {
+                setCachedRestaurantList(mockRestaurants);
                 setAllRestaurants(mockRestaurants);
                 setListOfRestaurants(mockRestaurants);
                 setStatus('Swiggy API did not return restaurants. Showing mock data.');

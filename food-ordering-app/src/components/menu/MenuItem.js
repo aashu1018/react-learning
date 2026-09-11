@@ -17,6 +17,7 @@ const MenuItem = ({ item }) => (
                 className="menu-item-img"
                 src={`${MENU_IMAGE_URL}${item.imageId}`}
                 alt={item.name}
+                loading="lazy"
             />
         ) : null}
     </li>

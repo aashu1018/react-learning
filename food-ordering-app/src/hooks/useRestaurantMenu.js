@@ -4,12 +4,14 @@ import { loadRestaurantMenu } from '../utils/menuApi';
 import { resolveRestaurantBySlug } from '../utils/resolveRestaurant';
 import { restaurantToMenuInfo } from '../utils/formatters';
 import { filterMenuSections, splitRecommendedSections } from '../utils/menuFilters';
+import { setCachedMenu } from '../utils/cache';
 
 const useRestaurantMenu = (resName, preview) => {
     const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState('');
     const [vegOnly, setVegOnly] = useState(false);
+    const previewId = preview?.id;
 
     useEffect(() => {
         let cancelled = false;
@@ -29,9 +31,15 @@ const useRestaurantMenu = (resName, preview) => {
 
             if (payload?.sections?.length) {
                 setMenu(payload);
-                setStatus('Loaded menu from Swiggy');
+                setStatus(
+                    payload.source === 'swiggy-proxy'
+                        ? 'Loaded menu from Swiggy'
+                        : 'Loaded menu from cache'
+                );
             } else if (restaurantId && mockMenusById[String(restaurantId)]) {
-                setMenu(mockMenusById[String(restaurantId)]);
+                const mockMenu = mockMenusById[String(restaurantId)];
+                setCachedMenu(restaurantId, mockMenu);
+                setMenu(mockMenu);
                 setStatus('API did not return JSON. Showing mock menu.');
             } else {
                 const fallbackName = restaurant?.name || resName.replace(/-/g, ' ');
@@ -53,7 +61,7 @@ const useRestaurantMenu = (resName, preview) => {
         return () => {
             cancelled = true;
         };
-    }, [resName, preview]);
+    }, [resName, previewId]);
 
     const filteredSections = useMemo(
         () => filterMenuSections(menu?.sections, { vegOnly }),

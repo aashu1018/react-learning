@@ -9,15 +9,13 @@ export const MENU_IMAGE_URL =
 
 export const PLACEHOLDER_IMAGE = `${SWIGGY_CDN}placeholder`;
 
+// Browser calls go through the Parcel `/swiggy` proxy only (direct swiggy.com is CORS-blocked).
 export const restaurantListUrls = () => {
     const path = `/dapi/restaurants/list/v5?lat=${SWIGGY_LAT}&lng=${SWIGGY_LNG}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
-    return [`/swiggy${path}`, `https://www.swiggy.com${path}`];
+    return [`/swiggy${path}`];
 };
 
-export const restaurantMenuUrls = (restaurantId) => {
-    const queries = [
-        `/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${SWIGGY_LAT}&lng=${SWIGGY_LNG}&restaurantId=${restaurantId}`,
-        `/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${SWIGGY_LAT}&lng=${SWIGGY_LNG}&restaurantId=${restaurantId}`,
-    ];
-    return queries.flatMap((path) => [`/swiggy${path}`, `https://www.swiggy.com${path}`]);
-};
+export const restaurantMenuUrls = (restaurantId) => [
+    `/swiggy/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${SWIGGY_LAT}&lng=${SWIGGY_LNG}&restaurantId=${restaurantId}`,
+    `/swiggy/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${SWIGGY_LAT}&lng=${SWIGGY_LNG}&restaurantId=${restaurantId}`,
+];

@@ -14,7 +14,12 @@ const RestaurantCard = ({ restaurant }) => {
         >
             <div className="res-card">
                 <div className="res-img-wrap">
-                    <img className="res-logo" src={image || PLACEHOLDER_IMAGE} alt={name} />
+                    <img
+                        className="res-logo"
+                        src={image || PLACEHOLDER_IMAGE}
+                        alt={name}
+                        loading="lazy"
+                    />
                     <span className="res-rating">{rating} ★</span>
                 </div>
                 <div className="res-card-body">
