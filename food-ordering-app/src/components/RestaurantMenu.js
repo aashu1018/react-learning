@@ -27,6 +27,8 @@ const RestaurantMenu = () => {
         );
     }
 
+    const restaurantName = menu?.info?.name || preview?.name || 'Restaurant';
+
     return (
         <div className="menu-page">
             <Link className="menu-back" to="/">
@@ -36,10 +38,18 @@ const RestaurantMenu = () => {
             <VegToggle checked={vegOnly} onChange={setVegOnly} />
             {status ? <p className="api-status">{status}</p> : null}
             {recommended.map((section) => (
-                <MenuSection key={`rec-${section.title}`} section={section} />
+                <MenuSection
+                    key={`rec-${section.title}`}
+                    section={section}
+                    restaurantName={restaurantName}
+                />
             ))}
             {otherSections.map((section) => (
-                <MenuSection key={section.title} section={section} />
+                <MenuSection
+                    key={section.title}
+                    section={section}
+                    restaurantName={restaurantName}
+                />
             ))}
             {!filteredSections.length ? (
                 <p>

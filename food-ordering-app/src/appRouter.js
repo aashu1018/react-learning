@@ -8,6 +8,7 @@ import Shimmer from './components/Shimmer';
 const About = lazy(() => import('./components/About'));
 const Contact = lazy(() => import('./components/Contact'));
 const Cart = lazy(() => import('./components/Cart'));
+const Payment = lazy(() => import('./components/Payment'));
 const RestaurantMenu = lazy(() => import('./components/RestaurantMenu'));
 
 const withSuspense = (element) => <Suspense fallback={<Shimmer />}>{element}</Suspense>;
@@ -22,6 +23,7 @@ const appRouter = createBrowserRouter([
             { path: '/about', element: withSuspense(<About />) },
             { path: '/contact', element: withSuspense(<Contact />) },
             { path: '/cart', element: withSuspense(<Cart />) },
+            { path: '/payment', element: withSuspense(<Payment />) },
             { path: '/restaurants/:resName', element: withSuspense(<RestaurantMenu />) },
         ],
     },
