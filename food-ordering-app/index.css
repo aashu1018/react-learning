@@ -18,6 +18,164 @@ body {
     padding: 0 24px;
 }
 
+.offline-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 40px 24px 48px;
+    background: #f7f7f7;
+}
+
+.offline-intro {
+    text-align: center;
+}
+
+.offline-intro h1 {
+    margin: 0 0 12px;
+    font-size: 36px;
+}
+
+.offline-intro p {
+    margin: 0 auto;
+    max-width: 420px;
+    color: #535665;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.offline-play {
+    width: 100%;
+    max-width: 480px;
+}
+
+.offline-mode-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 6px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.offline-mode-tabs button {
+    padding: 10px 12px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #535665;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.offline-mode-tabs button.is-active {
+    background: #fc8019;
+    color: #fff;
+}
+
+.offline-game-panel {
+    padding: 22px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    text-align: left;
+}
+
+.offline-progress,
+.offline-score,
+.offline-game-note {
+    margin: 0 0 12px;
+    color: #535665;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.offline-score {
+    font-size: 22px;
+    color: #1a1a1a;
+}
+
+.offline-game-panel h2 {
+    margin: 0 0 16px;
+    font-size: 20px;
+    line-height: 1.35;
+}
+
+.offline-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.offline-option {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    background: #fff;
+    color: #1a1a1a;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.offline-option:hover:enabled {
+    border-color: #fc8019;
+    background: #fff4ea;
+}
+
+.offline-option.is-correct {
+    border-color: #267e3e;
+    background: #eef8f0;
+    color: #267e3e;
+    font-weight: 700;
+}
+
+.offline-option.is-wrong {
+    border-color: #e23744;
+    background: #fdecee;
+    color: #e23744;
+}
+
+.offline-option:disabled {
+    cursor: default;
+}
+
+.offline-memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.offline-memory-card {
+    aspect-ratio: 1;
+    border: 1px solid #e6e6e6;
+    border-radius: 12px;
+    background: #fff4ea;
+    color: #fc8019;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.offline-memory-card.is-up {
+    background: #fff;
+    color: #1a1a1a;
+    font-size: 28px;
+}
+
+.offline-memory-card.is-matched {
+    border-color: #267e3e;
+    background: #eef8f0;
+}
+
 .logo {
     width: 80px;
     height: auto;
