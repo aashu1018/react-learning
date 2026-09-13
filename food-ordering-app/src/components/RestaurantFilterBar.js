@@ -1,40 +1,56 @@
 const RestaurantFilterBar = ({
     searchText,
     onSearchTextChange,
-    onSearch,
+    activeFilter = 'all',
     onTopRated,
     onFastDelivery,
     onShowAll,
+    vegOnly = false,
+    onVegOnly,
     searchPlaceholder = 'Search restaurants or dishes',
 }) => (
     <div className="filter-bar">
         <div className="search">
             <input
                 className="search-input"
-                type="text"
+                type="search"
                 placeholder={searchPlaceholder}
                 value={searchText}
                 onChange={(event) => onSearchTextChange(event.target.value)}
-                onKeyDown={(event) => {
-                    if (event.key === 'Enter') {
-                        onSearch();
-                    }
-                }}
+                aria-label={searchPlaceholder}
             />
-            <button className="search-btn" type="button" onClick={onSearch}>
-                Search
-            </button>
         </div>
         <div className="filter-btns">
-            <button type="button" onClick={onTopRated}>
+            <button
+                type="button"
+                className={activeFilter === 'top' ? 'is-active' : ''}
+                onClick={onTopRated}
+            >
                 Top Rated
             </button>
-            <button type="button" onClick={onFastDelivery}>
+            <button
+                type="button"
+                className={activeFilter === 'fast' ? 'is-active' : ''}
+                onClick={onFastDelivery}
+            >
                 Fast Delivery
             </button>
-            <button type="button" onClick={onShowAll}>
+            <button
+                type="button"
+                className={activeFilter === 'all' ? 'is-active' : ''}
+                onClick={onShowAll}
+            >
                 Show All
             </button>
+            {onVegOnly ? (
+                <button
+                    type="button"
+                    className={vegOnly ? 'is-active' : ''}
+                    onClick={() => onVegOnly(!vegOnly)}
+                >
+                    Veg
+                </button>
+            ) : null}
         </div>
     </div>
 );

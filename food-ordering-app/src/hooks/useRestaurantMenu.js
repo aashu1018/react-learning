@@ -3,7 +3,8 @@ import mockMenusById from '../assets/MockMenus';
 import { loadRestaurantMenu } from '../utils/menuApi';
 import { resolveRestaurantBySlug } from '../utils/resolveRestaurant';
 import { restaurantToMenuInfo } from '../utils/formatters';
-import { filterMenuSections, splitRecommendedSections } from '../utils/menuFilters';
+import { filterMenuSections, splitRecommendedSections, withBestsellersSection } from '../utils/menuFilters';
+import { restaurantSlug } from '../utils/restaurantSlug';
 import { setCachedMenu } from '../utils/cache';
 
 const useRestaurantMenu = (resName, preview) => {
@@ -11,6 +12,7 @@ const useRestaurantMenu = (resName, preview) => {
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState('');
     const [vegOnly, setVegOnly] = useState(false);
+    const [query, setQuery] = useState('');
     const previewId = preview?.id;
 
     useEffect(() => {
@@ -20,6 +22,7 @@ const useRestaurantMenu = (resName, preview) => {
             setLoading(true);
             setStatus('');
             setVegOnly(false);
+            setQuery('');
 
             const restaurant = await resolveRestaurantBySlug(resName, preview);
             const restaurantId = restaurant?.id;
@@ -31,16 +34,12 @@ const useRestaurantMenu = (resName, preview) => {
 
             if (payload?.sections?.length) {
                 setMenu(payload);
-                setStatus(
-                    payload.source === 'swiggy-proxy'
-                        ? 'Loaded menu from Swiggy'
-                        : 'Loaded menu from cache'
-                );
+                setStatus('');
             } else if (restaurantId && mockMenusById[String(restaurantId)]) {
                 const mockMenu = mockMenusById[String(restaurantId)];
                 setCachedMenu(restaurantId, mockMenu);
                 setMenu(mockMenu);
-                setStatus('API did not return JSON. Showing mock menu.');
+                setStatus('');
             } else {
                 const fallbackName = restaurant?.name || resName.replace(/-/g, ' ');
                 setMenu({
@@ -64,14 +63,19 @@ const useRestaurantMenu = (resName, preview) => {
     }, [resName, previewId]);
 
     const filteredSections = useMemo(
-        () => filterMenuSections(menu?.sections, { vegOnly }),
-        [menu, vegOnly]
+        () => filterMenuSections(menu?.sections, { vegOnly, query }),
+        [menu, vegOnly, query]
     );
 
-    const { recommended, otherSections } = useMemo(
-        () => splitRecommendedSections(filteredSections),
-        [filteredSections]
-    );
+    const displaySections = useMemo(() => {
+        const { recommended, otherSections } = splitRecommendedSections(filteredSections);
+        const ordered = withBestsellersSection([...recommended, ...otherSections]);
+
+        return ordered.map((section, index) => ({
+            ...section,
+            id: `menu-${index}-${restaurantSlug(section.title)}`,
+        }));
+    }, [filteredSections]);
 
     return {
         menu,
@@ -79,9 +83,10 @@ const useRestaurantMenu = (resName, preview) => {
         status,
         vegOnly,
         setVegOnly,
+        query,
+        setQuery,
         filteredSections,
-        recommended,
-        otherSections,
+        displaySections,
         preview,
     };
 };

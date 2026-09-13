@@ -3,6 +3,8 @@ import { MENU_IMAGE_URL } from '../constants/swiggy';
 import { restaurantSlug } from '../utils/restaurantSlug';
 import { useCart } from './CartProvider';
 import CartBillDetails from './CartBillDetails';
+import ImageWithFallback from './ImageWithFallback';
+import { DELIVERY_AREA } from '../constants/swiggy';
 
 const Cart = () => {
     const {
@@ -61,8 +63,8 @@ const Cart = () => {
             <div className="cart-add-more-bar">
                 <p>
                     {sourceName
-                        ? `Ordering from ${sourceName}`
-                        : 'Want something else too?'}
+                        ? `Ordering from ${sourceName} · Delivering to ${DELIVERY_AREA}`
+                        : `Delivering to ${DELIVERY_AREA}`}
                 </p>
                 <Link className="cart-add-more-link" to={addMorePath}>
                     + Add more items
@@ -114,11 +116,10 @@ const Cart = () => {
                                 {item.emoji}
                             </span>
                         ) : item.imageId ? (
-                            <img
+                            <ImageWithFallback
                                 className="cart-item-img"
                                 src={`${MENU_IMAGE_URL}${item.imageId}`}
                                 alt={item.name}
-                                loading="lazy"
                             />
                         ) : null}
                     </li>

@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useCart } from './CartProvider';
 import CartBillDetails from './CartBillDetails';
+import { DELIVERY_AREA } from '../constants/swiggy';
+import {
+    formatDeliveryEta,
+    readStoredAddress,
+    saveStoredAddress,
+} from '../utils/address';
 
 const Payment = () => {
     const {
@@ -16,6 +22,7 @@ const Payment = () => {
         clearCart,
     } = useCart();
     const navigate = useNavigate();
+    const stored = readStoredAddress();
     const [method, setMethod] = useState('upi');
     const [form, setForm] = useState({
         name: '',
@@ -23,9 +30,14 @@ const Payment = () => {
         cardNumber: '',
         expiry: '',
         cvv: '',
+        line: stored.line,
+        area: stored.area || DELIVERY_AREA,
+        phone: stored.phone,
     });
     const [paid, setPaid] = useState(false);
     const [wasGrocery, setWasGrocery] = useState(false);
+    const [etaLabel, setEtaLabel] = useState('');
+    const [deliveredTo, setDeliveredTo] = useState('');
 
     if (!items.length && !paid) {
         return <Navigate to="/cart" replace />;
@@ -38,7 +50,12 @@ const Payment = () => {
 
     const handlePay = (event) => {
         event.preventDefault();
-        setWasGrocery(items[0]?.vertical === 'grocery');
+        const grocery = items[0]?.vertical === 'grocery';
+        const minutes = grocery ? 15 : 35;
+        saveStoredAddress({ line: form.line, area: form.area, phone: form.phone });
+        setWasGrocery(grocery);
+        setEtaLabel(formatDeliveryEta(minutes));
+        setDeliveredTo([form.line, form.area].filter(Boolean).join(', '));
         setPaid(true);
         clearCart();
     };
@@ -49,11 +66,20 @@ const Payment = () => {
                 <p className="page-kicker">Order confirmed</p>
                 <h1>Payment successful</h1>
                 <p className="page-lead">
-                    Thanks{form.name ? `, ${form.name}` : ''}. Your order is placed
+                    Thanks{form.name ? `, ${form.name}` : ''}.{' '}
                     {wasGrocery
-                        ? ' and the store is packing your groceries.'
-                        : ' and the kitchen has started preparing it.'}
+                        ? 'The store is packing your groceries.'
+                        : 'The kitchen has started preparing your order.'}
                 </p>
+                <div className="payment-eta">
+                    <p>
+                        Arriving around <strong>{etaLabel}</strong>
+                    </p>
+                    <p>
+                        Delivering to {deliveredTo || DELIVERY_AREA}
+                        {wasGrocery ? ' · about 10–20 minutes' : ' · about 30–45 minutes'}
+                    </p>
+                </div>
                 <div className="payment-actions">
                     <button
                         className="search-btn"
@@ -75,7 +101,7 @@ const Payment = () => {
             <p className="page-kicker">Checkout</p>
             <h1>Payment</h1>
             <p className="page-lead">
-                Review your order and complete a mock payment. No real money is charged.
+                Add a delivery address and complete a mock payment. No real money is charged.
             </p>
 
             <section className="payment-summary">
@@ -113,6 +139,38 @@ const Payment = () => {
                         value={form.name}
                         onChange={updateField}
                         placeholder="Name on payment"
+                    />
+                </label>
+                <label>
+                    Delivery address
+                    <input
+                        name="line"
+                        type="text"
+                        required
+                        value={form.line}
+                        onChange={updateField}
+                        placeholder="House / street"
+                    />
+                </label>
+                <label>
+                    Area
+                    <input
+                        name="area"
+                        type="text"
+                        required
+                        value={form.area}
+                        onChange={updateField}
+                    />
+                </label>
+                <label>
+                    Phone
+                    <input
+                        name="phone"
+                        type="tel"
+                        required
+                        value={form.phone}
+                        onChange={updateField}
+                        placeholder="10-digit mobile"
                     />
                 </label>
 

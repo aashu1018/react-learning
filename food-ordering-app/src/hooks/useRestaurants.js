@@ -1,17 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import mockRestaurants from '../assets/MockData';
 import { loadRestaurantList } from '../utils/listApi';
 import {
+    filterByCuisine,
     filterBySearch,
     filterFastDelivery,
     filterTopRated,
+    filterVegRestaurants,
+    popularCuisines,
 } from '../utils/restaurantFilters';
 import { setCachedRestaurantList } from '../utils/cache';
 
+const applyRestaurantFilters = (restaurants, searchText, filter, cuisine, vegOnly) => {
+    let next = restaurants;
+    if (filter === 'top') {
+        next = filterTopRated(next);
+    }
+    if (filter === 'fast') {
+        next = filterFastDelivery(next);
+    }
+    if (vegOnly) {
+        next = filterVegRestaurants(next);
+    }
+    next = filterByCuisine(next, cuisine);
+    return filterBySearch(next, searchText);
+};
+
 const useRestaurants = () => {
     const [allRestaurants, setAllRestaurants] = useState([]);
-    const [listOfRestaurants, setListOfRestaurants] = useState([]);
     const [searchText, setSearchText] = useState('');
+    const [filter, setFilter] = useState('all');
+    const [cuisine, setCuisine] = useState('');
+    const [vegOnly, setVegOnly] = useState(false);
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState('');
 
@@ -30,13 +50,10 @@ const useRestaurants = () => {
 
             if (mapped.length) {
                 setAllRestaurants(mapped);
-                setListOfRestaurants(mapped);
-                setStatus(`Loaded ${mapped.length} restaurants from Swiggy`);
             } else {
                 setCachedRestaurantList(mockRestaurants);
                 setAllRestaurants(mockRestaurants);
-                setListOfRestaurants(mockRestaurants);
-                setStatus('Swiggy API did not return restaurants. Showing mock data.');
+                setStatus('Live restaurants are unavailable. Showing a saved list.');
             }
 
             setLoading(false);
@@ -48,18 +65,32 @@ const useRestaurants = () => {
         };
     }, []);
 
+    const cuisines = useMemo(() => popularCuisines(allRestaurants), [allRestaurants]);
+
     return {
-        listOfRestaurants,
+        listOfRestaurants: applyRestaurantFilters(
+            allRestaurants,
+            searchText,
+            filter,
+            cuisine,
+            vegOnly
+        ),
         searchText,
         setSearchText,
+        filter,
+        cuisine,
+        setCuisine,
+        vegOnly,
+        setVegOnly,
+        cuisines,
         loading,
         status,
-        search: () => setListOfRestaurants(filterBySearch(allRestaurants, searchText)),
-        showTopRated: () => setListOfRestaurants(filterTopRated(allRestaurants)),
-        showFastDelivery: () => setListOfRestaurants(filterFastDelivery(allRestaurants)),
+        showTopRated: () => setFilter('top'),
+        showFastDelivery: () => setFilter('fast'),
         showAll: () => {
             setSearchText('');
-            setListOfRestaurants(allRestaurants);
+            setFilter('all');
+            setCuisine('');
         },
     };
 };

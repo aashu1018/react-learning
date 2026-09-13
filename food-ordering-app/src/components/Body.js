@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Shimmer from './Shimmer';
 import RestaurantFilterBar from './RestaurantFilterBar';
+import CuisineChips from './CuisineChips';
 import RestaurantList from './RestaurantList';
 import useRestaurants from '../hooks/useRestaurants';
 
@@ -9,9 +10,14 @@ const Body = () => {
         listOfRestaurants,
         searchText,
         setSearchText,
+        filter,
+        cuisine,
+        setCuisine,
+        vegOnly,
+        setVegOnly,
+        cuisines,
         loading,
         status,
-        search,
         showTopRated,
         showFastDelivery,
         showAll,
@@ -20,11 +26,8 @@ const Body = () => {
     return (
         <div className="body">
             <Link className="grocery-promo" to="/grocery">
-                <span className="grocery-promo-emoji" aria-hidden="true">
-                    🛒
-                </span>
                 <span className="grocery-promo-copy">
-                    <strong>Grocery delivery</strong>
+                    <strong>Need groceries?</strong>
                     Milk, veggies, and snacks in as little as 10 minutes.
                 </span>
                 <span className="grocery-promo-cta">Open Grocery</span>
@@ -32,13 +35,22 @@ const Body = () => {
             <RestaurantFilterBar
                 searchText={searchText}
                 onSearchTextChange={setSearchText}
-                onSearch={search}
+                activeFilter={filter}
                 onTopRated={showTopRated}
                 onFastDelivery={showFastDelivery}
                 onShowAll={showAll}
+                vegOnly={vegOnly}
+                onVegOnly={setVegOnly}
             />
+            <CuisineChips cuisines={cuisines} activeCuisine={cuisine} onSelect={setCuisine} />
             {status ? <p className="api-status">{status}</p> : null}
-            {loading ? <Shimmer /> : <RestaurantList restaurants={listOfRestaurants} />}
+            {loading ? (
+                <Shimmer />
+            ) : listOfRestaurants.length ? (
+                <RestaurantList restaurants={listOfRestaurants} />
+            ) : (
+                <p className="empty-copy">No restaurants match that search.</p>
+            )}
         </div>
     );
 };

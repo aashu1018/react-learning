@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { PLACEHOLDER_IMAGE } from '../constants/swiggy';
 import { restaurantSlug } from '../utils/restaurantSlug';
 import { formatCostForTwo } from '../utils/formatters';
+import ImageWithFallback from './ImageWithFallback';
 
 const RestaurantCard = ({ restaurant }) => {
-    const { name, cuisines, dishes, costForTwo, rating, deliveryTime, image } = restaurant;
+    const { name, cuisines, costForTwo, rating, deliveryTime, image, isVeg } = restaurant;
 
     return (
         <Link
@@ -14,24 +14,13 @@ const RestaurantCard = ({ restaurant }) => {
         >
             <div className="res-card">
                 <div className="res-img-wrap">
-                    <img
-                        className="res-logo"
-                        src={image || PLACEHOLDER_IMAGE}
-                        alt={name}
-                        loading="lazy"
-                    />
+                    <ImageWithFallback className="res-logo" src={image} alt={name} />
                     <span className="res-rating">{rating} ★</span>
+                    {isVeg ? <span className="res-veg-badge">Veg</span> : null}
                 </div>
                 <div className="res-card-body">
                     <h3 className="res-name">{name}</h3>
                     <p className="res-cuisines">{cuisines.join(', ')}</p>
-                    {dishes?.length ? (
-                        <ul className="res-dishes">
-                            {dishes.map((dish, index) => (
-                                <li key={`${dish}-${index}`}>{dish}</li>
-                            ))}
-                        </ul>
-                    ) : null}
                     <div className="res-meta">
                         <span>{formatCostForTwo(costForTwo)}</span>
                         <span>{deliveryTime} mins</span>

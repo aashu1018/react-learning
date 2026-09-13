@@ -10,6 +10,7 @@ export const mapApiRestaurant = (item, index) => {
         costForTwo: info.costForTwoMessage || info.costForTwo,
         rating: info.avgRating ?? info.avgRatingString,
         deliveryTime: info.sla?.deliveryTime,
+        isVeg: Boolean(info.veg),
         image: info.cloudinaryImageId ? `${SWIGGY_CDN}${info.cloudinaryImageId}` : undefined,
     };
 };

@@ -47,6 +47,7 @@ const restaurants = [
         costForTwo: 250,
         rating: 4.5,
         deliveryTime: 30,
+        isVeg: true,
         image: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -57,6 +58,7 @@ const restaurants = [
         costForTwo: 280,
         rating: 4.6,
         deliveryTime: 26,
+        isVeg: true,
         image: 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -107,6 +109,7 @@ const restaurants = [
         costForTwo: 300,
         rating: 4.3,
         deliveryTime: 25,
+        isVeg: true,
         image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80',
     },
     {

@@ -9,6 +9,8 @@ export const MENU_IMAGE_URL =
 
 export const PLACEHOLDER_IMAGE = `${SWIGGY_CDN}placeholder`;
 
+export const DELIVERY_AREA = 'Koramangala';
+
 // Browser calls go through the Parcel `/swiggy` proxy only (direct swiggy.com is CORS-blocked).
 export const restaurantListUrls = () => {
     const path = `/dapi/restaurants/list/v5?lat=${SWIGGY_LAT}&lng=${SWIGGY_LNG}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;

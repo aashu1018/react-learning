@@ -1,7 +1,7 @@
 import MenuItem from './MenuItem';
 
 const MenuSection = ({ section, restaurantName }) => (
-    <section className="menu-section">
+    <section className="menu-section" id={section.id}>
         <h2>
             {section.title} ({section.items.length})
         </h2>

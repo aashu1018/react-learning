@@ -6,23 +6,36 @@ import {
     filterTopRatedGrocery,
 } from '../utils/groceryFilters';
 
+const applyGroceryFilters = (stores, searchText, filter) => {
+    let next = stores;
+    if (filter === 'top') {
+        next = filterTopRatedGrocery(next);
+    }
+    if (filter === 'fast') {
+        next = filterFastGrocery(next);
+    }
+    return filterGroceryStores(next, searchText);
+};
+
 const useGroceryStores = () => {
     const [searchText, setSearchText] = useState('');
-    const [list, setList] = useState(GROCERY_STORES);
+    const [filter, setFilter] = useState('all');
 
-    const status = useMemo(() => `${GROCERY_STORES.length} stores delivering nearby`, []);
+    const stores = useMemo(
+        () => applyGroceryFilters(GROCERY_STORES, searchText, filter),
+        [searchText, filter]
+    );
 
     return {
-        stores: list,
+        stores,
         searchText,
         setSearchText,
-        status,
-        search: () => setList(filterGroceryStores(GROCERY_STORES, searchText)),
-        showTopRated: () => setList(filterTopRatedGrocery(GROCERY_STORES)),
-        showFastDelivery: () => setList(filterFastGrocery(GROCERY_STORES)),
+        filter,
+        showTopRated: () => setFilter('top'),
+        showFastDelivery: () => setFilter('fast'),
         showAll: () => {
             setSearchText('');
-            setList(GROCERY_STORES);
+            setFilter('all');
         },
     };
 };

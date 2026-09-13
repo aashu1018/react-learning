@@ -25,7 +25,7 @@ export const cartTotals = (items = []) => {
     };
 };
 
-const itemVertical = (item) => item.vertical || 'food';
+export const itemVertical = (item) => item.vertical || 'food';
 
 export const addItemToCart = (items, item) => {
     const vertical = itemVertical(item);
