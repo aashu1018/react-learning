@@ -24,18 +24,30 @@ const Cart = () => {
         return (
             <div className="page">
                 <h1>Cart</h1>
-                <p>Your cart is empty. Open a restaurant and tap Add on a dish.</p>
-                <Link className="menu-back" to="/">
-                    Browse restaurants
-                </Link>
+                <p>Your cart is empty. Add a dish from a restaurant or items from Grocery.</p>
+                <p>
+                    <Link className="menu-back" to="/">
+                        Browse restaurants
+                    </Link>
+                </p>
+                <p>
+                    <Link className="menu-back" to="/grocery">
+                        Browse grocery
+                    </Link>
+                </p>
             </div>
         );
     }
 
-    const restaurantName = items.find((item) => item.restaurantName)?.restaurantName;
-    const addMorePath = restaurantName
-        ? `/restaurants/${restaurantSlug(restaurantName)}`
-        : '/';
+    const isGrocery = items[0]?.vertical === 'grocery';
+    const sourceName = items.find((item) => item.restaurantName)?.restaurantName;
+    const addMorePath = isGrocery
+        ? sourceName
+            ? `/grocery/${restaurantSlug(sourceName)}`
+            : '/grocery'
+        : sourceName
+          ? `/restaurants/${restaurantSlug(sourceName)}`
+          : '/';
 
     return (
         <div className="page cart-page">
@@ -48,8 +60,8 @@ const Cart = () => {
 
             <div className="cart-add-more-bar">
                 <p>
-                    {restaurantName
-                        ? `Ordering from ${restaurantName}`
+                    {sourceName
+                        ? `Ordering from ${sourceName}`
                         : 'Want something else too?'}
                 </p>
                 <Link className="cart-add-more-link" to={addMorePath}>
@@ -62,12 +74,17 @@ const Cart = () => {
                     <li key={item.id} className="cart-item">
                         <div className="cart-item-info">
                             <p className="cart-item-name">
-                                <span
-                                    className={item.isVeg ? 'veg-dot' : 'nonveg-dot'}
-                                    aria-hidden="true"
-                                />
+                                {item.vertical === 'grocery' ? null : (
+                                    <span
+                                        className={item.isVeg ? 'veg-dot' : 'nonveg-dot'}
+                                        aria-hidden="true"
+                                    />
+                                )}
                                 {item.name}
                             </p>
+                            {item.unit ? (
+                                <p className="cart-item-restaurant">{item.unit}</p>
+                            ) : null}
                             {item.restaurantName ? (
                                 <p className="cart-item-restaurant">{item.restaurantName}</p>
                             ) : null}
@@ -92,7 +109,11 @@ const Cart = () => {
                                 </button>
                             </div>
                         </div>
-                        {item.imageId ? (
+                        {item.emoji && !item.imageId ? (
+                            <span className="cart-item-emoji" aria-hidden="true">
+                                {item.emoji}
+                            </span>
+                        ) : item.imageId ? (
                             <img
                                 className="cart-item-img"
                                 src={`${MENU_IMAGE_URL}${item.imageId}`}

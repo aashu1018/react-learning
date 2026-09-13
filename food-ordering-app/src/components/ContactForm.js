@@ -52,6 +52,7 @@ const ContactForm = () => {
                 <select name="topic" value={form.topic} onChange={updateField}>
                     <option value="order">Order issue</option>
                     <option value="restaurant">Restaurant listing</option>
+                    <option value="grocery">Grocery delivery</option>
                     <option value="account">Login or account</option>
                     <option value="other">Something else</option>
                 </select>

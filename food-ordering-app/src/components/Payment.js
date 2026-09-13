@@ -25,6 +25,7 @@ const Payment = () => {
         cvv: '',
     });
     const [paid, setPaid] = useState(false);
+    const [wasGrocery, setWasGrocery] = useState(false);
 
     if (!items.length && !paid) {
         return <Navigate to="/cart" replace />;
@@ -37,6 +38,7 @@ const Payment = () => {
 
     const handlePay = (event) => {
         event.preventDefault();
+        setWasGrocery(items[0]?.vertical === 'grocery');
         setPaid(true);
         clearCart();
     };
@@ -47,12 +49,18 @@ const Payment = () => {
                 <p className="page-kicker">Order confirmed</p>
                 <h1>Payment successful</h1>
                 <p className="page-lead">
-                    Thanks{form.name ? `, ${form.name}` : ''}. Your order is placed and the kitchen
-                    has started preparing it.
+                    Thanks{form.name ? `, ${form.name}` : ''}. Your order is placed
+                    {wasGrocery
+                        ? ' and the store is packing your groceries.'
+                        : ' and the kitchen has started preparing it.'}
                 </p>
                 <div className="payment-actions">
-                    <button className="search-btn" type="button" onClick={() => navigate('/')}>
-                        Back to restaurants
+                    <button
+                        className="search-btn"
+                        type="button"
+                        onClick={() => navigate(wasGrocery ? '/grocery' : '/')}
+                    >
+                        {wasGrocery ? 'Back to grocery' : 'Back to restaurants'}
                     </button>
                 </div>
             </div>

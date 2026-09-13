@@ -5,13 +5,14 @@ const RestaurantFilterBar = ({
     onTopRated,
     onFastDelivery,
     onShowAll,
+    searchPlaceholder = 'Search restaurants or dishes',
 }) => (
     <div className="filter-bar">
         <div className="search">
             <input
                 className="search-input"
                 type="text"
-                placeholder="Search restaurants or dishes"
+                placeholder={searchPlaceholder}
                 value={searchText}
                 onChange={(event) => onSearchTextChange(event.target.value)}
                 onKeyDown={(event) => {

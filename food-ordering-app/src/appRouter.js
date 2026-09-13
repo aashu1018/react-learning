@@ -10,6 +10,8 @@ const Contact = lazy(() => import('./components/Contact'));
 const Cart = lazy(() => import('./components/Cart'));
 const Payment = lazy(() => import('./components/Payment'));
 const RestaurantMenu = lazy(() => import('./components/RestaurantMenu'));
+const Grocery = lazy(() => import('./components/Grocery'));
+const GroceryStore = lazy(() => import('./components/GroceryStore'));
 
 const withSuspense = (element) => <Suspense fallback={<Shimmer />}>{element}</Suspense>;
 
@@ -25,6 +27,8 @@ const appRouter = createBrowserRouter([
             { path: '/cart', element: withSuspense(<Cart />) },
             { path: '/payment', element: withSuspense(<Payment />) },
             { path: '/restaurants/:resName', element: withSuspense(<RestaurantMenu />) },
+            { path: '/grocery', element: withSuspense(<Grocery />) },
+            { path: '/grocery/:storeName', element: withSuspense(<GroceryStore />) },
         ],
     },
 ]);

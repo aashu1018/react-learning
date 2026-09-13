@@ -5,8 +5,8 @@ const Contact = () => (
         <p className="page-kicker">We are here to help</p>
         <h1>Contact Us</h1>
         <p className="page-lead">
-            Questions about an order, a restaurant listing, or an account? Reach the team below or
-            send a message and we will get back to you.
+            Questions about an order, a restaurant listing, a grocery delivery, or an
+            account? Reach the team below or send a message and we will get back to you.
         </p>
 
         <div className="info-grid">
@@ -19,11 +19,11 @@ const Contact = () => (
                 <p>Hours: 8:00 AM – 11:00 PM IST, all days</p>
             </article>
             <article className="info-card">
-                <h3>Restaurant partners</h3>
+                <h3>Grocery partners</h3>
                 <p>
-                    Email: <a href="mailto:partners@foodapp.local">partners@foodapp.local</a>
+                    Email: <a href="mailto:grocery@foodapp.local">grocery@foodapp.local</a>
                 </p>
-                <p>For menu updates, listing issues, and onboarding.</p>
+                <p>For catalog updates, stock issues, and store onboarding.</p>
             </article>
             <article className="info-card">
                 <h3>Office</h3>

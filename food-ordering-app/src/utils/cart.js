@@ -25,16 +25,21 @@ export const cartTotals = (items = []) => {
     };
 };
 
+const itemVertical = (item) => item.vertical || 'food';
+
 export const addItemToCart = (items, item) => {
-    const existing = items.find((entry) => entry.id === item.id);
+    const vertical = itemVertical(item);
+    const scopedItems =
+        items.length && itemVertical(items[0]) !== vertical ? [] : items;
+    const existing = scopedItems.find((entry) => entry.id === item.id);
     if (existing) {
-        return items.map((entry) =>
+        return scopedItems.map((entry) =>
             entry.id === item.id ? { ...entry, quantity: entry.quantity + 1 } : entry
         );
     }
 
     return [
-        ...items,
+        ...scopedItems,
         {
             id: item.id,
             name: item.name,
@@ -42,6 +47,10 @@ export const addItemToCart = (items, item) => {
             isVeg: item.isVeg,
             imageId: item.imageId,
             restaurantName: item.restaurantName,
+            storeName: item.storeName,
+            vertical,
+            unit: item.unit,
+            emoji: item.emoji,
             quantity: 1,
         },
     ];

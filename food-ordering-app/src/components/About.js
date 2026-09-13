@@ -4,9 +4,10 @@ const About = () => {
             <p className="page-kicker">Our story</p>
             <h1>About Us</h1>
             <p className="page-lead">
-                We started this food ordering app to make finding a great meal as easy
-                as scrolling your feed. Browse nearby restaurants, filter by what you
-                care about, and get food to your door without the usual guesswork.
+                We started this food and grocery app to make finding a great meal or a
+                last-minute store run as easy as scrolling your feed. Browse nearby
+                restaurants, hop into Grocery for essentials, and get it to your door
+                without the usual guesswork.
             </p>
 
             <section className="page-section">
@@ -36,8 +37,15 @@ const About = () => {
                 <article className="info-card">
                     <h3>Order</h3>
                     <p>
-                        Add items to your cart when you are ready. We keep the flow
-                        simple so you spend less time tapping and more time eating.
+                        Add items to your cart when you are ready. Food and grocery stay
+                        in separate carts so delivery stays simple.
+                    </p>
+                </article>
+                <article className="info-card">
+                    <h3>Grocery</h3>
+                    <p>
+                        Pick a nearby store and add milk, produce, snacks, or household
+                        items. Most stores promise delivery in under 20 minutes.
                     </p>
                 </article>
             </div>
@@ -53,6 +61,7 @@ const About = () => {
                     <li>Clear ratings and delivery times on every card</li>
                     <li>Search that looks at names, cuisines, and dishes</li>
                     <li>A cart you can open any time from the header</li>
+                    <li>A grocery vertical for essentials, separate from restaurant orders</li>
                     <li>Support that actually answers order questions</li>
                 </ul>
             </section>
