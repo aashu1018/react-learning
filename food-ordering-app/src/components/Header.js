@@ -31,6 +31,7 @@ const Header = () => {
                     type="button"
                     className={`cart-nav${isCartOpen ? ' active' : ''}`}
                     onClick={openCart}
+                    data-cart-target
                 >
                     Cart
                     {itemCount ? <span className="cart-badge">{itemCount}</span> : null}

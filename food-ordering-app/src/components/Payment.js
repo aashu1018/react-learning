@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useCart } from './CartProvider';
 import CartBillDetails from './CartBillDetails';
+import OrderStatusTimeline from './OrderStatusTimeline';
 import { DELIVERY_AREA } from '../constants/swiggy';
 import {
     formatDeliveryEta,
@@ -80,6 +81,7 @@ const Payment = () => {
                         {wasGrocery ? ' · about 10–20 minutes' : ' · about 30–45 minutes'}
                     </p>
                 </div>
+                <OrderStatusTimeline isGrocery={wasGrocery} />
                 <div className="payment-actions">
                     <button
                         className="search-btn"

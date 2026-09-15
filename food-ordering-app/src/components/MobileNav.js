@@ -17,7 +17,12 @@ const MobileNav = () => {
             <Link to="/grocery" className={groceryActive ? 'active' : ''}>
                 Grocery
             </Link>
-            <button type="button" className={cartActive ? 'active' : ''} onClick={openCart}>
+            <button
+                type="button"
+                className={cartActive ? 'active' : ''}
+                onClick={openCart}
+                data-cart-target
+            >
                 Cart
                 {itemCount ? <span className="cart-badge">{itemCount}</span> : null}
             </button>

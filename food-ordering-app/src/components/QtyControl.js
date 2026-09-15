@@ -1,4 +1,5 @@
 import { useCart } from './CartProvider';
+import { flyToCart } from '../utils/flyToCart';
 
 const QtyControl = ({ payload }) => {
     const { items, addItem, increaseItem, decreaseItem } = useCart();
@@ -6,7 +7,14 @@ const QtyControl = ({ payload }) => {
 
     if (!inCart) {
         return (
-            <button className="add-to-cart-btn" type="button" onClick={() => addItem(payload)}>
+            <button
+                className="add-to-cart-btn"
+                type="button"
+                onClick={(event) => {
+                    flyToCart(event.currentTarget);
+                    addItem(payload);
+                }}
+            >
                 Add
             </button>
         );

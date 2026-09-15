@@ -20,46 +20,22 @@ const RestaurantMenu = () => {
         setQuery,
         displaySections,
     } = useRestaurantMenu(resName, preview);
-    const [activeId, setActiveId] = useState('');
+    const [openId, setOpenId] = useState('');
 
     useEffect(() => {
-        setActiveId(displaySections[0]?.id || '');
+        setOpenId(displaySections[0]?.id || '');
     }, [displaySections]);
 
-    useEffect(() => {
-        if (!displaySections.length) {
-            return undefined;
-        }
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const visible = entries
-                    .filter((entry) => entry.isIntersecting)
-                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-                if (visible[0]?.target?.id) {
-                    setActiveId(visible[0].target.id);
-                }
-            },
-            { rootMargin: '-140px 0px -55% 0px', threshold: [0.1, 0.25, 0.5] }
-        );
-
-        displaySections.forEach((section) => {
-            const node = document.getElementById(section.id);
-            if (node) {
-                observer.observe(node);
-            }
-        });
-
-        return () => observer.disconnect();
-    }, [displaySections]);
-
-    const scrollToSection = (id) => {
+    const openSection = (id) => {
+        setOpenId(id);
         const node = document.getElementById(id);
-        if (!node) {
-            return;
+        if (node) {
+            node.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-        setActiveId(id);
-        node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    const toggleSection = (id) => {
+        setOpenId((current) => (current === id ? '' : id));
     };
 
     if (loading) {
@@ -85,14 +61,14 @@ const RestaurantMenu = () => {
                 onQueryChange={setQuery}
                 onSearch={() => {
                     if (displaySections[0]) {
-                        scrollToSection(displaySections[0].id);
+                        openSection(displaySections[0].id);
                     }
                 }}
             />
             <MenuCategoryRail
                 sections={displaySections}
-                activeId={activeId}
-                onSelect={scrollToSection}
+                activeId={openId}
+                onSelect={openSection}
             />
             {status ? <p className="api-status">{status}</p> : null}
             {displaySections.map((section) => (
@@ -100,6 +76,8 @@ const RestaurantMenu = () => {
                     key={section.id}
                     section={section}
                     restaurantName={restaurantName}
+                    isOpen={openId === section.id}
+                    onToggle={() => toggleSection(section.id)}
                 />
             ))}
             {!displaySections.length ? (
