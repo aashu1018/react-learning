@@ -1,16 +1,22 @@
 import { SWIGGY_CDN } from '../constants/swiggy';
 
+const PROMOTED_RATING_THRESHOLD = 4.5;
+
 export const mapApiRestaurant = (item, index) => {
     const info = item.info || item;
+    const rating = info.avgRating ?? info.avgRatingString;
     return {
         id: info.id ?? String(index),
         name: info.name,
         cuisines: info.cuisines || [],
         dishes: [...new Set([info.locality, info.areaName].filter(Boolean))],
         costForTwo: info.costForTwoMessage || info.costForTwo,
-        rating: info.avgRating ?? info.avgRatingString,
+        rating,
         deliveryTime: info.sla?.deliveryTime,
         isVeg: Boolean(info.veg),
+        // Swiggy's public listing feed doesn't reliably carry a `promoted` flag,
+        // so treat a genuine flag as authoritative and otherwise fall back to a rating bar.
+        promoted: Boolean(info.promoted) || Number(rating) >= PROMOTED_RATING_THRESHOLD,
         image: info.cloudinaryImageId ? `${SWIGGY_CDN}${info.cloudinaryImageId}` : undefined,
     };
 };

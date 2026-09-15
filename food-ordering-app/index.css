@@ -1410,6 +1410,24 @@ body {
     border-radius: 6px;
 }
 
+.promoted-wrap {
+    position: relative;
+}
+
+.promoted-label {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1;
+    background: linear-gradient(135deg, #ff9f43, #ff6b35);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
 .img-fallback {
     display: flex;
     align-items: center;
