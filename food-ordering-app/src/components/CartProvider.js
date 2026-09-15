@@ -24,6 +24,7 @@ export const CartProvider = ({ children }) => {
     const [items, setItems] = useState(readStoredCart);
     const [toast, setToast] = useState(null);
     const [pendingItem, setPendingItem] = useState(null);
+    const [isCartOpen, setIsCartOpen] = useState(false);
     const toastTimer = useRef(null);
 
     useEffect(() => {
@@ -55,6 +56,10 @@ export const CartProvider = ({ children }) => {
             items,
             toast,
             pendingItem,
+            isCartOpen,
+            openCart: () => setIsCartOpen(true),
+            closeCart: () => setIsCartOpen(false),
+            toggleCart: () => setIsCartOpen((open) => !open),
             ...bill,
             addItem,
             increaseItem: (itemId) =>
@@ -83,7 +88,7 @@ export const CartProvider = ({ children }) => {
             },
             cancelReplace: () => setPendingItem(null),
         };
-    }, [items, toast, pendingItem]);
+    }, [items, toast, pendingItem, isCartOpen]);
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

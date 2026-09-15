@@ -4,6 +4,7 @@ import Footer from './Footer';
 import MobileNav from './MobileNav';
 import OfflineBanner from './OfflineBanner';
 import CartToast from './CartToast';
+import CartDrawer from './CartDrawer';
 import CartReplaceDialog from './CartReplaceDialog';
 import useOnlineStatus from '../hooks/useOnlineStatus';
 
@@ -23,6 +24,7 @@ const AppLayout = () => {
             <Footer />
             <MobileNav />
             <CartToast />
+            <CartDrawer />
             <CartReplaceDialog />
         </div>
     );

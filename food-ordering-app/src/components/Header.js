@@ -1,11 +1,11 @@
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from 'url:../assets/Logo.png';
 import LoginButton from './LoginButton';
 import { useCart } from './CartProvider';
 import { DELIVERY_AREA } from '../constants/swiggy';
 
 const Header = () => {
-    const { itemCount } = useCart();
+    const { itemCount, isCartOpen, openCart } = useCart();
     const { pathname } = useLocation();
     const foodActive = pathname === '/' || pathname.startsWith('/restaurants');
     const groceryActive = pathname.startsWith('/grocery');
@@ -27,10 +27,14 @@ const Header = () => {
                 </nav>
             </div>
             <div className="header-right">
-                <NavLink to="/cart" className="cart-nav">
+                <button
+                    type="button"
+                    className={`cart-nav${isCartOpen ? ' active' : ''}`}
+                    onClick={openCart}
+                >
                     Cart
                     {itemCount ? <span className="cart-badge">{itemCount}</span> : null}
-                </NavLink>
+                </button>
                 <LoginButton />
             </div>
         </header>

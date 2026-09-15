@@ -1,8 +1,7 @@
-import { Link } from 'react-router-dom';
 import { useCart } from './CartProvider';
 
 const CartToast = () => {
-    const { toast } = useCart();
+    const { toast, openCart } = useCart();
 
     if (!toast) {
         return null;
@@ -11,7 +10,9 @@ const CartToast = () => {
     return (
         <div className="cart-toast" role="status">
             <span>{toast.name} added</span>
-            <Link to="/cart">View cart</Link>
+            <button type="button" className="cart-toast-view" onClick={openCart}>
+                View cart
+            </button>
         </div>
     );
 };
