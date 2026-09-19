@@ -1,4 +1,4 @@
-import { SWIGGY_CDN } from '../constants/swiggy';
+import { SWIGGY_CDN } from '../constants/swiggy.js';
 
 const PROMOTED_RATING_THRESHOLD = 4.5;
 
