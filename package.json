@@ -17,9 +17,19 @@
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html",
-    "test": "node --test \"food-ordering-app/tests/*.test.js\""
+    "test": "npm run test:unit && npm run test:ui",
+    "test:unit": "node --test \"food-ordering-app/tests/*.test.js\"",
+    "test:ui": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "babel-jest": "^30.5.2",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
     "parcel": "^2.16.4"
   },
   "@parcel/resolver-default": {
